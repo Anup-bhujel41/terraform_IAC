@@ -46,7 +46,22 @@ module "application_load_balancer" {
 
 #Aws certificate manager for domain
 module "acm" {
-  souce = "../module/certificate_manager"
-  domain_name = var.domain_name
-  alternative_name - var.alternative_name
+  souce                           = "../module/certificate_manager"
+  domain_name                     = var.domain_name
+  alternative_name                = var.alternative_name
+}
+
+
+#creating Nat Gateway for private subnets in az1 and az2
+module "nat_gateway" {
+  source                          = "../modules/NAT_GT"
+  vpc_id                          = module.vpc.vpc_id
+  private_data_subnet_az2_id      = module.vpc.private_data_subnet_az2_id
+  private_app_subnet_az2_id       = module.vpc.private_app_subnet_az2_id
+  private_data_subnet_az1_id      = module.vpc.private_data_subnet_az1_id
+  private_app_subnet_az1_id       = module.vpc.private_app_subnet_az1_id
+  public_subnet_az1_id            = module.vpc.public_subnet_az1_id
+  public_subnet_az2_id            = module.vpc.public_subnet_az2_id
+  test_vpc_internet_gateway       = module.vpc.test_vpc_internet_gateway
+
 }
