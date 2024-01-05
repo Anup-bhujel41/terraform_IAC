@@ -46,7 +46,7 @@ module "application_load_balancer" {
 
 #Aws certificate manager for domain
 module "acm" {
-  souce                           = "../module/certificate_manager"
+  source                           = "../module/certificate_manager"
   domain_name                     = var.domain_name
   alternative_name                = var.alternative_name
 }
@@ -64,4 +64,27 @@ module "nat_gateway" {
   public_subnet_az2_id            = module.vpc.public_subnet_az2_id
   test_vpc_internet_gateway       = module.vpc.test_vpc_internet_gateway
 
+}
+
+#creating ec2 instance in public subnet using module
+module "public_ec2_az1" {
+  source = "../module/ec2_for_vpc"
+  public_subnet_az1_id = module.vpc.public_subnet_az1_id
+  alb_security_group_id = module.security_group.alb_security_group_id
+  vpc_security_group_id = module.security_group.vpc_security_group_id
+  public_subnet_instance_sg_id = module.security_group.public_subnet_instance_sg_id
+
+}
+
+#creating rds instance in the private subnet using module
+module "rds" {
+  source = "../module/rds"
+  private_data_subnet_az1_id = module.vpc.private_data_subnet_az1_id
+  rds_security_group_id = module.security_group.rds_security_group_id
+}
+
+
+#creating secrets manager for the credentials management
+module "secrets_manager" {
+  source = "../module/secrets_manager"
 }

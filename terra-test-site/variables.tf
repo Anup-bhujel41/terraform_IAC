@@ -12,3 +12,9 @@ variable "private_data_subnet_az2_cidr" {}
 #new variablesneeds to be aaded to the project file
 variable "domain_name" {}
 variable "alternative_name" {}
+
+variable "public_subnet_instance_sg_id" {}
+variable "alb_security_group_id" {}
+variable "vpc_security_group_id" {}
+
+variable "rds_security_group_id" {}
