@@ -1,4 +1,4 @@
-# main configuration file where we will reference the vpc module
+]# main configuration file where we will reference the vpc module
 
 #configure aws provider
 provider "aws" {
@@ -30,6 +30,7 @@ module "vpc" {
 module "security_group" {
   source                          = "../modules/security_group"
   vpc_id                          = var.vpc_id
+  client_cidr_block               = module.aws_vpn.client_cidr_block
 }
 
 #creating Application load balancer
@@ -81,10 +82,29 @@ module "rds" {
   source = "../module/rds"
   private_data_subnet_az1_id = module.vpc.private_data_subnet_az1_id
   rds_security_group_id = module.security_group.rds_security_group_id
+  client_cidr_block = module.aws_vpn.client_cidr_block
 }
 
 
 #creating secrets manager for the credentials management
 module "secrets_manager" {
   source = "../module/secrets_manager"
+}
+
+#creating module for aws aws_vpn
+module "aws_vpn" {
+  source = "../module/aws_vpn"
+  private_data_subnet_az1_id = module.private_data_subnet_az1_id
+}
+
+
+#creating redis cluster
+module "redis" {
+  source = "../module/redis"
+  
+}
+
+#creating s3 for static hosting
+module "s3" {
+  source = "../module/s3"
 }

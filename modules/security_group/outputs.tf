@@ -13,3 +13,7 @@ output "public_subnet_instance_sg_id" {
 output "rds_security_group_id" {
   value = aws_security_group.rds_security_group.id
 }
+
+output "redis_security_group_id" {
+  value = aws_security_group.redis_security_group.id
+}

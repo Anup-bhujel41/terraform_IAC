@@ -18,3 +18,5 @@ variable "alb_security_group_id" {}
 variable "vpc_security_group_id" {}
 
 variable "rds_security_group_id" {}
+variable "client_cidr_block" {}
+variable "redis_security_group_id" {}

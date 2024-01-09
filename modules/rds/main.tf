@@ -14,7 +14,7 @@ resource "aws_db_instance" "mysql_db_instance" {
   skip_final_snapshot               = "false"
   backup_retention_period           = 7
   subnet_id                         = var.private_data_subnet_az1_id
-  vpc_security_group                = [var.rds_security_group_id]
+  vpc_security_group                = [var.rds_security_group_id, var.redis_security_group_id]
 
   tags                              = {
     Name                            = "Rds instance placed in the private subnet of az1"
